@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE: text-management-ms
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+  app:
+    image: marcelmariani/text-management-ms
+    restart: always
+    build: ./text-management-ms
+    working_dir: /text-management-ms
+    container_name: app-text-management-ms
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongodb:27017/text-management-ms?authSource=admin
+    ports:
+      - 80:80
+    command: mvn spring-boot:run
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  mongodb_data:
