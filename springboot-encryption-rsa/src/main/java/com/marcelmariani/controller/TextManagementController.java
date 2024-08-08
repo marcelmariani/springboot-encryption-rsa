@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.marcelmariani.dto.TextManagementDTO;
 import com.marcelmariani.model.TextManagement;
 import com.marcelmariani.service.TextManagementService;
-import com.marcelmariani.service.implement.TextManagementCryptoPassword;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

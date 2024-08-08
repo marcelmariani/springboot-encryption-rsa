@@ -41,19 +41,8 @@ public class TextManagementServiceImplement implements TextManagementService {
 		TextManagement textManagement = this.textManagementRepository.findById(uuid)
 				.orElseThrow(() -> new IllegalArgumentException("Text Management not exists!"));
 
-		// Validate if data is encrypted
-//		if (textManagement.getEncryption()) {
-
 			privateKey = TextManagementUtils.replaceSpacesWithPlus(privateKey);
 			
-//			// Validate if the password is correct
-//			String decryptedPrivateKeyPassword = TextManagementCryptoPassword.decrypt(textManagement.getPrivateKeyPassword());
-//			if (!decryptedPrivateKeyPassword.equals(privateKeyPassword)) {
-//				LogInfo = "The provided password is incorrect.";
-//				logger.info(LogInfo);
-//				throw new IllegalArgumentException(LogInfo);
-//			}
-
 			// Decrypt the text data
 			try {
 				String decryptedTextData = null;
@@ -68,7 +57,6 @@ public class TextManagementServiceImplement implements TextManagementService {
 				logger.error(LogInfo);
 				throw new IllegalArgumentException(LogInfo, e);
 			}
-//		}
 
 		return textManagement;
 	}
@@ -83,12 +71,9 @@ public class TextManagementServiceImplement implements TextManagementService {
 	 */
 	public TextManagement saveTextManagement(TextManagement textManagement) throws Exception {
 
-//		if (textManagement.getEncryption()) {
 			PrivateKey privateKey = TextManagementCryptoTextRaw.generateKeyPair(textManagement.getKeySize());
-//			textManagement.setPrivateKeyPassword(TextManagementCryptoPassword.encrypt(textManagement.getPrivateKeyPassword()));
 			textManagement.setPrivateKey(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
 			textManagement.setTextData(TextManagementCryptoTextRaw.encrypt(textManagement.getTextData()));
-//		}
 
 		return this.textManagementRepository.save(textManagement);
 	}
